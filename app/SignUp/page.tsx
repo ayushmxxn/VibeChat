@@ -6,7 +6,9 @@ import "react-toastify/dist/ReactToastify.css"
 function SignUpPage() {
   return (
     <div>
-      <SignUpForm/>
+      <SignUpForm setNewUser={function (value: React.SetStateAction<boolean>): void {
+        throw new Error('Function not implemented.')
+      } }/>
       <ToastContainer position='bottom-right'/>
     </div>
   )
