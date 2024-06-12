@@ -5,7 +5,7 @@ import { db } from "../lib/Firebase";
 import { useState } from "react";
 import { useUserStore } from "../lib/UserStore";
 
-const AddUser = (adduser) => {
+const AddUser = (adduser:any) => {
     const [user, setUser] = useState(null);
     const [userNotFound, setUserNotFound] = useState(false);
 
