@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useUserStore } from '../lib/UserStore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useMediaQuery } from 'react-responsive';
 import { auth, db } from '../lib/Firebase'; // Import Firebase modules
 import LeftSideBar from './LeftSideBar';
 import DefaultAvatar from '@/app/images/DefaultAvatar.png';
@@ -14,10 +15,11 @@ function Settings() {
   const { currentUser } = useUserStore();
   const [goback, setGoBack] = useState(false);
   const [newAvatar, setNewAvatar] = useState(currentUser.avatar || DefaultAvatar);
-  const [aboutMe, setAboutMe] = useState('');
+  const [aboutMe, setAboutMe] = useState();
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(currentUser.username || '');
+  const isDesktop = useMediaQuery({ minWidth: 768 });
 
   const aboutInputRef = useRef<HTMLInputElement>(null);
   const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -116,9 +118,11 @@ function Settings() {
         <LeftSideBar />
       ) : (
         <>
-          <div className='flex items-center pb-2 p-3 justify-center'>
+          <div className={`flex items-center w-72 pb-2 p-3 justify-center`}>
             <Image onClick={handleBack} src={Back} alt='BackButton' width={20} height={20} className='relative right-20 cursor-pointer'/>
-            <p>Settings</p>
+            <div className={`${!isDesktop && 'relative left-10'}`}>
+              <p>Settings</p>
+            </div>
           </div>
           <hr className='my-1 border-t-1 border-slate-300'/>
           <div className='flex items-center justify-between pr-4'>
@@ -195,8 +199,8 @@ function Settings() {
             </div>
           </div>
           <hr className='border-t-1 border-slate-300 mx-2'/>
-          <div className='flex flex-col justify-center items-center mt-[70px]'>
-            <button onClick={() => auth.signOut()} className='bg-slate-900 hover:bg-black text-white font-normal py-2 px-4 w-60 mt-8 rounded-md text-sm'>Log out</button>
+          <div className='flex flex-col justify-center items-center mt-[160px]'>
+            <button onClick={() => auth.signOut()} className={`bg-slate-900 hover:bg-black text-white font-normal py-2 px-4 w-60  rounded-md text-sm ${!isDesktop && 'w-80 mt-10'}`}>Log out</button>
           </div>
         </>
       )}

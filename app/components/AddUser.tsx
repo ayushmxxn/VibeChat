@@ -4,6 +4,7 @@ import { collection, getDocs, doc, query, serverTimestamp, setDoc, where, arrayU
 import { db } from "../lib/Firebase";
 import { useState } from "react";
 import { useUserStore } from "../lib/UserStore";
+import { useMediaQuery } from 'react-responsive';
 
 // Define a type for the user data
 type User = {
@@ -19,8 +20,8 @@ const AddUser = (adduser: any) => {
     // Initialize the state with the correct type
     const [user, setUser] = useState<User | null>(null);
     const [userNotFound, setUserNotFound] = useState(false);
-
     const { currentUser } = useUserStore();
+    const isDesktop = useMediaQuery({ minWidth: 768 });
 
     const handleSearch = async (e: any) => {
         e.preventDefault();
@@ -48,6 +49,7 @@ const AddUser = (adduser: any) => {
     const handleAddUser = async () => {
         const chatRef = collection(db, 'chats');
         const userChatsRef = collection(db, 'userchats');
+    
 
         try {
             const newChatRef = doc(chatRef);
@@ -77,6 +79,7 @@ const AddUser = (adduser: any) => {
 
             console.log(newChatRef.id);
             setUser(null);
+            
 
         } catch (error) {
             console.log(error);
@@ -84,7 +87,7 @@ const AddUser = (adduser: any) => {
     };
 
     return (
-        <div className="p-6 bg-white shadow-lg border rounded-md absolute top-40 left-96 m-auto w-80">
+        <div className={`p-6 bg-white shadow-lg border rounded-md absolute top-40 left-72 m-auto w-80 ${!isDesktop && 'absolute top-52 left-9'}`}>
             <form onSubmit={handleSearch} className="space-y-4">
                 <input
                     type="text"

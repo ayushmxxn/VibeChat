@@ -24,7 +24,7 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 items-center justify-center h-screen">
       <div className="p-8 space-y-8 bg-white rounded shadow-md w-96">
         <h2 className="text-2xl font-bold text-center">Sign In</h2>
         <form onSubmit={handleSignIn} className="space-y-6">

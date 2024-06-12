@@ -51,9 +51,9 @@ function RightSideBar() {
       console.error('Error updating user block status:', error);
     }
   };
-
+ 
   return (
-    <div className='bg-white w-80 h-[500px] rounded-r-md'>
+    <div className='bg-white w-72 h-[500px] rounded-r-md'>
       <div className='flex flex-col items-center'>
         <Image src={user?.avatar || DefaultAvatar} alt='Profile' width={80} height={80} className='rounded-full mt-5' />
         <p className='mt-2 font-semibold'>{user?.username || 'User'}</p>
@@ -78,7 +78,7 @@ function RightSideBar() {
           </div>
         )}
       </div>
-      <div className='flex justify-center mt-14'>
+      <div className='flex justify-center mt-28'>
         <div className='flex flex-col gap-2 mt-3'>
           <button onClick={handleBlock} className='bg-slate-900 hover:bg-black text-white py-2 px-4 w-60 rounded-md text-sm font-normal'>
             {isCurrentUserBlocked ? 'You are Blocked' : isReceiverBlocked ? 'UnBlock' : 'Block User'}

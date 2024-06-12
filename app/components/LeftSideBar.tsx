@@ -8,6 +8,7 @@ import Settings from './Settings';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/Firebase';
 import AddUser from './AddUser';
+import { useMediaQuery } from 'react-responsive';
 
 interface ChatItem {
   chatId: string;
@@ -26,6 +27,7 @@ function LeftSideBar() {
   const { changeChat } = useChatStore();
   const [chats, setChats] = useState<ChatItem[]>([]); // Define the type for chats
   const [query, setQuery] = useState('');
+  const isDesktop = useMediaQuery({ minWidth: 768 }); 
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
@@ -107,12 +109,12 @@ function LeftSideBar() {
     .filter((c) => !c.hidden);
 
   return (
-    <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} w-72 h-[580px] font-semibold rounded-l-md border`}>
+    <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} ${!isDesktop && ' w-full h-[701px]'} w-72 h-[635px] font-semibold rounded-l-md border`}>
       {openSettings ? (
         <Settings />
       ) : (
         <>
-          <div className='flex justify-between items-center px-5 pt-5'>
+          <div className='flex justify-between items-center  px-5 pt-5'>
             <p className='font-medium'>Messages</p>
             <Image
               onClick={handleSettings}
@@ -124,7 +126,7 @@ function LeftSideBar() {
             />
           </div>
           <div className='relative p-5'>
-            <div className='relative flex items-center bg-[#E1E1E1] rounded-md w-60 h-8'>
+            <div className={`relative flex items-center bg-[#E1E1E1] ${!isDesktop && ' w-full'}  rounded-md w-60 h-8`}>
               <Image
                 src={Search}
                 alt='SearchIcon'
@@ -144,12 +146,12 @@ function LeftSideBar() {
           </div>
 
           {/* Chatlist */}
-          <div className='bg-white h-[452px] overflow-auto rounded-bl-md'>
+          <div className={`bg-white h-[510px] ${!isDesktop &&  'h-[570px]'}  overflow-auto rounded-bl-md`}>
             {filteredChats.map((chat, index) => (
               <div
                 onClick={(e) => handleSelected(chat, e)}
                 key={chat.chatId}
-                className='w-full h-14 bg-[#FFFFFF] pl-5 flex items-center cursor-pointer'
+                className={`w-full h-14 bg-[#FFFFFF] pl-5 flex items-center cursor-pointer ${!isDesktop && 'h-16'}`}
                 style={{
                   backgroundColor: chat?.isSeen ? 'transparent' : '#BBD7FE',
                   borderBottom: index !== filteredChats.length - 1 ? '1px solid #E2E8F0' : 'none',
@@ -173,7 +175,7 @@ function LeftSideBar() {
             <hr className='border-t-1 border-slate-200 ' />
             <span
               onClick={() => setAddUser((prev) => !prev)}
-              className='bg-[#54617F] hover:bg-opacity-90 z-50 text-white px-3 py-1 absolute bottom-10 left-80 font-normal rounded-sm cursor-pointer'
+              className={`bg-[#54617F] hover:bg-opacity-90 z-50 text-white px-3 py-1 absolute top-[580px] left-56 font-normal rounded-sm cursor-pointer ${!isDesktop && 'absolute left-[330px] top-[630px]'} `}
             >
               {adduser ? '-' : '+'}
             </span>

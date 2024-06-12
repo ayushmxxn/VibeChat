@@ -6,7 +6,6 @@ import Mic from '@/app/images/Mic.svg'
 import Send from '@/app/images/Send.png'
 import Emoji from '@/app/images/Emoji.png'
 import Gallary from '@/app/images/Gallary.png'
-import Camera from '@/app/images/Camera.png'
 import NoChat from '@/app/images/chatting.png'
 import { useUserStore } from '../lib/UserStore'
 import { doc, getDoc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -45,8 +44,7 @@ interface User {
   about: string;
 }
 
-
-function Chat() {
+function MobileChat() {
   const { isCurrentUserBlocked, isReceiverBlocked, chatId, user } = useChatStore();
   const { currentUser } = useUserStore();
   const [chat, setChat] = useState<ChatData | null>(null);
@@ -54,6 +52,7 @@ function Chat() {
   const [text, setText] = useState('');
   const [image, setImage] = useState<{ file: File | null; url: string }>({ file: null, url: '' });
   const endRef = useRef<HTMLDivElement>(null);
+  
 
   const handleEmoji = (e: any) => {
     setText((prev) => prev + e.emoji);
@@ -132,6 +131,7 @@ function Chat() {
   }, [chat]);
 
   useEffect(() => {
+    if (!chatId) return; 
     const unsub = onSnapshot(doc(db, 'chats', chatId), (res) => {
       setChat(res.data() as ChatData);
     });
@@ -238,23 +238,24 @@ function Chat() {
   const allImages = getAllImages();
   console.log(allImages);
 
+  console.log()
+
   return (
-    <div className='bg-white border flex-grow flex flex-col justify-between '>
+    <div className={`bg-white  w-full h-[685px] flex-grow flex flex-col justify-between`}>
       {/* Topbar */}
-      <div className='bg-[#EDEDED] w-full h-14 p-2 pl-4 flex   justify-between items-center'>
+      <div className='bg-[#EDEDED] w-full h-12 p-2 pl-4 flex justify-between items-center'>
         <div className='flex items-center'>
           <Image src={user?.avatar || DefaultAvatar} alt='Avatar' width={35} height={35} className='rounded-full' />
           <div className='ml-3'>
             <p className='font-medium text-sm'>{user?.username || 'User'}</p>
-            <p className='font-normal text-[#525354] text-xs'>{user.about}</p>
+            <p className='font-normal text-[#525354] text-xs'>{user?.about}</p>
           </div>
         </div>
-        
       </div>
 
       {/* Chats */}
-      <div className='bg-white   w-full h-[476px] overflow-auto p-5'>
-        <div className='flex justify-center items-center mt-10'>
+      <div className='bg-white w-full h-[476px] overflow-auto p-5'>
+        <div className='flex justify-center items-center mt-10 mb-10'>
           <Image src={NoChat} alt='NoChat' width={200} height={100} />
         </div>
         {chat?.messages?.map((message) => (
@@ -274,7 +275,7 @@ function Chat() {
                 </div>
               ) : (
                 <div>
-                  <Image src={message.image!} alt='image' width={250} height={250} className='rounded-md' />
+                  <Image src={message.image!} alt='image' width={150} height={150} className='rounded-md' />
                   <span className={`${message.senderId === currentUser?.id ? 'text-xs text-end pr-4 pt-1 text-[#525354]' : 'text-xs text-end pr-4 pt-1 text-[#525354]'}`}>
                     {new Date(message.createdAt.seconds * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
                   </span>
@@ -291,15 +292,15 @@ function Chat() {
       </div>
 
       {/* BottomBar */}
-      <div className={`bg-[#EDEDED] w-full h-14 flex p-4 items-center justify-between`}>
-        <div className={`relative flex items-center w-[550px] bg-white rounded-full h-8`}>
+      <div className={`bg-[#EDEDED] w-full justify-between  h-14 flex p-4 items-center`}>
+        <div className={`relative flex items-center w-72 bg-white rounded-full h-8`}>
           <Image src={Mic} alt='Mic' width={18} height={18} className='absolute left-3' />
           <input
             name='SearchBar'
             id='Searchbar'
             onKeyDown={handleKeyPress}
             placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? 'You cannot text this user' : 'Write a message'}
-            className={`bg-transparent w-96 outline-none pl-10 pr-3 py-1 font-normal text-sm placeholder:text-black`}
+            className={`bg-transparent w-full text-sm outline-none pl-10 pr-3 py-1 font-normal  placeholder:text-black`}
             value={text}
             onChange={(e) => setText(e.target.value)}
             autoComplete='off'
@@ -307,7 +308,7 @@ function Chat() {
           />
           <Image onClick={handleSend} src={Send} alt='Send' width={20} height={20} className={`absolute right-3 rounded bg-white py-1`} />
         </div>
-        <div className='flex gap-3 items-center mr-1'>
+        <div className='flex gap-3 pl-4 items-center'>
           {(isCurrentUserBlocked || isReceiverBlocked) ? (
             <>
               <Image src={Emoji} alt='Emoji' width={20} height={20} className={`cursor-not-allowed`} />
@@ -320,7 +321,7 @@ function Chat() {
             <>
               <Image src={Emoji} alt='Emoji' width={20} height={20} onClick={() => setOpen((prev) => !prev)} className={`cursor-pointer`} />
               {open && (
-                <div className={`absolute top-28 right-80 emoji-picker ${open ? 'emoji-picker-enter' : 'emoji-picker-exit'}`}>
+                <div className={`absolute top-[850px] left-5 emoji-picker ${open ? 'emoji-picker-enter' : 'emoji-picker-exit'}`}>
                   <EmojiPicker onEmojiClick={handleEmoji} />
                 </div>
               )}
@@ -330,11 +331,11 @@ function Chat() {
               <input type='file' name='file' id='file' style={{ display: 'none' }} className='cursor-pointer' onChange={handleImage} />
             </>
           )}
-          <Image src={Camera} alt='Camera' width={22} height={22} />
+          
         </div>
       </div>
     </div>
   );
 }
 
-export default Chat;
+export default MobileChat;
