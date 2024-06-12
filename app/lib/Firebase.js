@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: "vibechat-bee21.firebaseapp.com",
   projectId: "vibechat-bee21",
   storageBucket: "vibechat-bee21.appspot.com",
