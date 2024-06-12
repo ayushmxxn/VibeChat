@@ -9,48 +9,56 @@ import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/Firebase';
 import AddUser from './AddUser';
 
+interface ChatItem {
+  chatId: string;
+  receiverId: string;
+  updatedAt: number;
+  user: any; 
+  isSeen: boolean;
+  lastMessage: string
+  hidden: boolean;
+}
+
 function LeftSideBar() {
   const [openSettings, setOpenSettings] = useState(false);
   const [adduser, setAddUser] = useState(false);
   const { currentUser } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
-  const [chats, setChats] = useState([]);
+  const { changeChat } = useChatStore();
+  const [chats, setChats] = useState<ChatItem[]>([]); // Define the type for chats
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-  const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
-    const items = res.data()?.chats;
+    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
+      const items = res.data()?.chats;
 
-    if (!items) {
-      setChats([]);
-      return;
-    }
+      if (!items) {
+        setChats([]);
+        return;
+      }
 
-    const promises = items.map(async (item) => {
-      const userDocRef = doc(db, 'users', item.receiverId);
-      const userDocSnap = await getDoc(userDocRef);
+      const promises = items.map(async (item: ChatItem) => { // Explicitly define the type for item
+        const userDocRef = doc(db, 'users', item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
 
-      const user = userDocSnap.data();
+        const user = userDocSnap.data();
 
-      return { ...item, user };
+        return { ...item, user };
+      });
+
+      const chatData = await Promise.all(promises);
+      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
     });
 
-    const chatData = await Promise.all(promises);
-    setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
-  });
-
-  return () => {
-    unsub();
-  };
-}, [currentUser.id]);
-
- 
+    return () => {
+      unsub();
+    };
+  }, [currentUser.id]);
 
   const handleSettings = () => {
     setOpenSettings((prev) => !prev);
   };
 
-  const handleSelected = async (chat, event) => {
+  const handleSelected = async (chat: ChatItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.detail === 3) {
       const userChatsRef = doc(db, 'userchats', currentUser.id);
       const updatedChats = chats.map((c) => (c.chatId === chat.chatId ? { ...c, hidden: true } : c));
@@ -172,7 +180,7 @@ function LeftSideBar() {
           </div>
         </>
       )}
-      {adduser && <AddUser/>}
+      {adduser && <AddUser />}
     </div>
   );
 }

@@ -3,21 +3,16 @@ import Image from 'next/image';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/Firebase';
 import DefaultAvatar from '@/app/images/DefaultAvatar.png';
-import DownloadIMG from '@/app/images/download.png';
-import Media1 from '@/app/images/Media1.svg';
-import Media2 from '@/app/images/Media2.svg';
-import Media3 from '@/app/images/Media3.svg';
-import Media4 from '@/app/images/Media4.svg';
 import { useChatStore } from '../lib/ChatStore';
 import { useUserStore } from '../lib/UserStore';
 import Link from 'next/link';
-import EmptyMediaIcon from '@/app/images/EmptyMedia.png'
+import EmptyMediaIcon from '@/app/images/EmptyMedia.png';
 
 function RightSideBar() {
   const { user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, chatId } = useChatStore();
   const { currentUser } = useUserStore();
-  const [chat, setChat] = useState(null);
-  const [allImages, setAllImages] = useState([]);
+  const [chat, setChat] = useState<any | null>(null);
+  const [allImages, setAllImages] = useState<string[]>([]);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'chats', chatId), (res) => {
@@ -31,7 +26,7 @@ function RightSideBar() {
 
   useEffect(() => {
     if (chat) {
-      const imageUrls = chat.messages ? chat.messages.filter(message => message.image).map(message => message.image) : [];
+      const imageUrls = chat.messages ? chat.messages.filter((message: any) => message.image).map((message: any) => message.image) : [];
       setAllImages(imageUrls);
     }
   }, [chat]);
@@ -42,9 +37,9 @@ function RightSideBar() {
     const userDocRef = doc(db, 'users', currentUser.id);
 
     try {
-      let blockedArray = [];
+      let blockedArray: string[] = [];
       if (isReceiverBlocked) {
-        blockedArray = user.blocked ? user.blocked.filter(id => id !== user.id) : [];
+        blockedArray = user.blocked ? user.blocked.filter((id: string) => id !== user.id) : [];
       } else {
         blockedArray = user.blocked ? [...user.blocked, user.id] : [user.id];
       }
@@ -57,16 +52,14 @@ function RightSideBar() {
     }
   };
 
-
-
   return (
     <div className='bg-white w-80 h-[500px] rounded-r-md'>
       <div className='flex flex-col items-center'>
         <Image src={user?.avatar || DefaultAvatar} alt='Profile' width={80} height={80} className='rounded-full mt-5' />
         <p className='mt-2 font-semibold'>{user?.username || 'User'}</p>
       </div>
-      <p className='text-sm text-center mt-1 text-slate-500'>{user.about}</p>
-      <hr className='border-t-1 border-slate-200 mt-6'/>
+      <p className='text-sm text-center mt-1 text-slate-500'>{user?.about}</p>
+      <hr className='border-t-1 border-slate-200 mt-6' />
       <div className='flex justify-between mt-1 p-6'>
         <span className='text-sm font-medium'>Shared Media</span>
       </div>
@@ -74,8 +67,8 @@ function RightSideBar() {
         {allImages.length > 0 ? (
           allImages.map((imageUrl, index) => (
             <div key={index}>
-              <Link href={imageUrl} target="_blank">
-                <Image src={imageUrl} alt='Media' width={100} height={50} className='rounded hover:opacity-90'/>
+              <Link href={imageUrl} target='_blank'>
+                <Image src={imageUrl} alt='Media' width={100} height={50} className='rounded hover:opacity-90' />
               </Link>
             </div>
           ))
@@ -87,10 +80,7 @@ function RightSideBar() {
       </div>
       <div className='flex justify-center mt-14'>
         <div className='flex flex-col gap-2 mt-3'>
-          <button 
-            onClick={handleBlock} 
-            className='bg-slate-900 hover:bg-black text-white py-2 px-4 w-60 rounded-md text-sm font-normal'
-          >
+          <button onClick={handleBlock} className='bg-slate-900 hover:bg-black text-white py-2 px-4 w-60 rounded-md text-sm font-normal'>
             {isCurrentUserBlocked ? 'You are Blocked' : isReceiverBlocked ? 'UnBlock' : 'Block User'}
           </button>
         </div>

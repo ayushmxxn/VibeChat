@@ -1,16 +1,14 @@
-import Image from 'next/image';
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useUserStore } from '../lib/UserStore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../lib/Firebase'; // Import Firebase modules
+import LeftSideBar from './LeftSideBar';
+import DefaultAvatar from '@/app/images/DefaultAvatar.png';
 import Back from '@/app/images/back.png';
 import Delete from '@/app/images/delete.png';
 import Upload from '@/app/images/upload.png';
 import Edit from '@/app/images/edit.png';
-import DefaultAvatar from '@/app/images/DefaultAvatar.png';
-import { auth, db } from '../lib/Firebase'; // Import Firebase modules
-import { useUserStore } from '../lib/UserStore';
-import LeftSideBar from './LeftSideBar';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-
-
+import Image from 'next/image';
 
 function Settings() {
   const { currentUser } = useUserStore();
@@ -21,9 +19,8 @@ function Settings() {
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(currentUser.username || '');
 
-
-  const aboutInputRef = useRef(null);
-  const usernameInputRef = useRef(null);
+  const aboutInputRef = useRef<HTMLInputElement>(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch the latest user data from Firebase
   useEffect(() => {
@@ -54,12 +51,12 @@ function Settings() {
     console.log("Document updated");
   };
 
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const newAvatar = reader.result;
+        const newAvatar = reader.result as string;
         setNewAvatar(newAvatar);
         try {
           const docRef = doc(db, "users", currentUser.id);
