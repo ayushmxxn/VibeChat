@@ -14,7 +14,7 @@
 /out/
 
 # production
-/build
+/build/
 
 # misc
 .DS_Store
@@ -27,7 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*
-.env*.local
+!.env.example  # Optionally keep a .env.example file for reference
 
 # vercel
 .vercel
