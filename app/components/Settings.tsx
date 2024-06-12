@@ -15,7 +15,7 @@ function Settings() {
   const { currentUser } = useUserStore();
   const [goback, setGoBack] = useState(false);
   const [newAvatar, setNewAvatar] = useState(currentUser.avatar || DefaultAvatar);
-  const [aboutMe, setAboutMe] = useState();
+  const [aboutMe, setAboutMe] = useState<string>('');
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(currentUser.username || '');
