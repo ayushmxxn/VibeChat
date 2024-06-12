@@ -2,32 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+body {
+  background: linear-gradient(to right, rgb(249, 168, 212), rgb(216, 180, 254), rgb(129, 140, 248));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* ScrollBar Styles */
+/* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
+  /* Gradient background for the track */
+  border-radius: 10px;
+  /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5a5a5a;
+  /* Darker color for the thumb */
+  border-radius: 10px;
+  /* Rounded corners for the thumb */
+  border: 2px solid transparent;
+  /* Space around the thumb */
+  background-clip: content-box;
+  /* Clip the background to the content box */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3a3a3a;
+  /* Darker color when hovering over the scrollbar thumb */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin;
+  /* Width of the scrollbar */
+  scrollbar-color: #383535 #f0f0f0;
+  /* Color of the scrollbar thumb and track */
+}
+
+/* For IE and Edge */
+* {
+  -ms-overflow-style: none;
+  /* Disable default scrollbar in IE */
+}
+
+
+
+
+
+/* Emoji Picker Styles */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.emoji-picker {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+}
+
+.emoji-picker-enter {
+  animation-name: slideIn;
+}
+
+.emoji-picker-exit {
+  animation-name: slideOut;
+}
+
+
+
+.animated-image {
+  animation: fadeInScaleBounce 2s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+}
+
+.animated-image:hover {
+  transform: scale(0.8) rotate(1deg);
+}
+
+/* Keyframes for modern fade-in, scale-up, rotate, and bounce animation */
+@keyframes fadeInScaleBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  70% {
+    opacity: 0.85;
+    transform: scale(0.9) rotate(-3deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 }
