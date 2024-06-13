@@ -1,7 +1,7 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../lib/Firebase';
 
@@ -19,6 +19,22 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
       toast.success('You are now signed in!');
     } catch (error: any) {
       console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleGitHubSignIn = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+
+      const user = result.user;
+
+      toast.success('Signed in with GitHub');
+    } catch (error: any) {
+      console.error("Error signing in with GitHub:", error);
       toast.error(error.message);
     }
   };
@@ -77,6 +93,7 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
           </button>
           <button
             type="button"
+            onClick={handleGitHubSignIn}
             className="w-32 flex justify-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
             <FaGithub className="h-5 w-5" />

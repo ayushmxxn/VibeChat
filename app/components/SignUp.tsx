@@ -1,11 +1,10 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { auth, db } from '@/app/lib/Firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
-
 
 const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
 
@@ -17,9 +16,18 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const about = formData.get('about') as string; // New field: about
-    const avatar = formData.get('avatar') as string; 
+    const avatar = formData.get('avatar') as string;
 
     try {
+      // Check if email is already registered
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+      if (signInMethods.length > 0) {
+        // User already exists
+        toast.error('An account with this email already exists.');
+        return;
+      }
+
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
       await setDoc(doc(db, "users", res.user.uid), {
@@ -28,9 +36,8 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         id: res.user.uid,
         blocked: [],
         password,
-        about, 
+        about,
         avatar
-      
       });
 
       await setDoc(doc(db, "userchats", res.user.uid), {
@@ -41,6 +48,64 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
 
     } catch (error: any) {
       console.log(error.message);
+      toast.error(error.message);
+    }
+  };
+
+  const handleGitHubSignIn = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+
+      const user = result.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: user.displayName,
+        email: user.email,
+        id: user.uid,
+        blocked: [],
+        about: "",
+        avatar: user.photoURL
+      });
+
+      await setDoc(doc(db, "userchats", user.uid), {
+        chats: []
+      });
+
+      toast.success('Signed in with GitHub');
+    } catch (error: any) {
+      console.error("Error signing in with GitHub:", error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+
+      const user = result.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: user.displayName,
+        email: user.email,
+        id: user.uid,
+        blocked: [],
+        about: "",
+        avatar: user.photoURL
+      });
+
+      await setDoc(doc(db, "userchats", user.uid), {
+        chats: []
+      });
+
+      toast.success('Signed in with Google');
+    } catch (error: any) {
+      console.error("Error signing in with Google:", error);
       toast.error(error.message);
     }
   };
@@ -114,6 +179,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
           </button>
           <button
             type="button"
+            onClick={handleGitHubSignIn}
             className="w-32 flex justify-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
             <FaGithub className="h-5 w-5" />
