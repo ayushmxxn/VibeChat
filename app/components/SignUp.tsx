@@ -173,6 +173,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         <div className="flex justify-around items-center">
           <button
             type="button"
+            onClick={handleGoogleSignIn}
             className="w-32 flex justify-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
             <FcGoogle className="h-5 w-5" />
