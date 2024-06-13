@@ -1,9 +1,11 @@
+// SignInForm.tsx
+
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
-import { signInWithEmailAndPassword, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { toast } from 'react-toastify';
-import { auth } from '../lib/Firebase';
+import { auth, signInWithGitHub, signInWithGoogle } from '../lib/Firebase'; // Adjust path as per your project structure
 
 const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
 
@@ -16,7 +18,7 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success('You are now signed in!');
+      toast.success('Welcome back!');
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
@@ -24,17 +26,19 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
   };
 
   const handleGitHubSignIn = async () => {
-    const provider = new GithubAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const credential = GithubAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
-
-      const user = result.user;
-
-      toast.success('Signed in with GitHub');
+      await signInWithGitHub();
+      toast.success('Welcome back!');
     } catch (error: any) {
-      console.error("Error signing in with GitHub:", error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success('Welcome back!');
+    } catch (error: any) {
       toast.error(error.message);
     }
   };
@@ -87,6 +91,7 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         <div className="flex justify-around items-center">
           <button
             type="button"
+            onClick={handleGoogleSignIn}
             className="w-32 flex justify-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
             <FcGoogle className="h-5 w-5" />

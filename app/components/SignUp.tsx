@@ -44,7 +44,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         chats: []
       });
 
-      toast.success('Account Created');
+      toast.success('Account creation successful!');
 
     } catch (error: any) {
       console.log(error.message);
@@ -74,9 +74,8 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         chats: []
       });
 
-      toast.success('Signed in with GitHub');
+      toast.success('Account creation successful!');
     } catch (error: any) {
-      console.error("Error signing in with GitHub:", error);
       toast.error(error.message);
     }
   };
@@ -103,9 +102,8 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         chats: []
       });
 
-      toast.success('Signed in with Google');
+      toast.success(`Account creation successful!`);
     } catch (error: any) {
-      console.error("Error signing in with Google:", error);
       toast.error(error.message);
     }
   };

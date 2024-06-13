@@ -1,9 +1,11 @@
 // firebaseConfig.js
+
 import { initializeApp } from "firebase/app";
-import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: "vibechat-bee21.firebaseapp.com",
@@ -16,8 +18,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+// Initialize Firebase services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-export const provider = new GithubAuthProvider();
-export const signInWithGitHub = () => signInWithPopup(auth, provider);
+
+// Initialize providers
+export const githubProvider = new GithubAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
+
+// Export signInWithPopup functions
+export const signInWithGitHub = () => signInWithPopup(auth, githubProvider);
+export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
