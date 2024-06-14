@@ -18,7 +18,6 @@ import MobileChat from './components/MobileChat';
 function HomePage() {
   const [newUser, setNewUser] = useState(false); // Track if it's a new user
   const { currentUser, isLoading, fetchUserInfo} = useUserStore();
-  const { user } = useChatStore()
   const { chatId } = useChatStore();
   const isDesktop = useMediaQuery({ minWidth: 768 }); // Define the breakpoint for mobile vs. desktop
 

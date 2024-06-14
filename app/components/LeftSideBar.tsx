@@ -16,7 +16,7 @@ interface ChatItem {
   updatedAt: number;
   user: any; 
   isSeen: boolean;
-  lastMessage: string
+  lastMessage: string;
   hidden: boolean;
 }
 
@@ -25,11 +25,9 @@ function LeftSideBar() {
   const [adduser, setAddUser] = useState(false);
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
-  const [chats, setChats] = useState<ChatItem[]>([]); // Define the type for chats
+  const [chats, setChats] = useState<ChatItem[]>([]);
   const [query, setQuery] = useState('');
-  const isDesktop = useMediaQuery({ minWidth: 768 }); 
-   // Check if username exists
-
+  const isDesktop = useMediaQuery({ minWidth: 768 });
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
@@ -40,7 +38,7 @@ function LeftSideBar() {
         return;
       }
 
-      const promises = items.map(async (item: ChatItem) => { // Explicitly define the type for item
+      const promises = items.map(async (item: ChatItem) => {
         const userDocRef = doc(db, 'users', item.receiverId);
         const userDocSnap = await getDoc(userDocRef);
 
@@ -63,7 +61,9 @@ function LeftSideBar() {
   };
 
   const handleSelected = async (chat: ChatItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // Check if triple click
     if (event.detail === 3) {
+      console.log('Triple click detected');
       const userChatsRef = doc(db, 'userchats', currentUser.id);
       const updatedChats = chats.map((c) => (c.chatId === chat.chatId ? { ...c, hidden: true } : c));
 
@@ -76,9 +76,11 @@ function LeftSideBar() {
         if (remainingChats.length > 0) {
           const nextChat = remainingChats[0];
           changeChat(nextChat.chatId, nextChat.user);
+        } else {
+          changeChat('', null); // Clear the chat if no remaining chats
         }
 
-        setChats(updatedChats);
+        setChats(remainingChats);
       } catch (error) {
         console.log(error);
       }
@@ -86,11 +88,11 @@ function LeftSideBar() {
       return;
     }
 
+    // Handle single or double click
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
     });
-    
 
     const chatIndex = userChats.findIndex((item) => item.chatId === chat.chatId);
     userChats[chatIndex].isSeen = true;
@@ -108,15 +110,8 @@ function LeftSideBar() {
   };
 
   const filteredChats = chats
-  .filter((c) => c.user && c.user.username && c.user.username.toLowerCase().includes(query.toLowerCase()))
-  .filter((c) => !c.hidden);
-
-  
-
-
-
- 
-
+    .filter((c) => c.user && c.user.username && c.user.username.toLowerCase().includes(query.toLowerCase()))
+    .filter((c) => !c.hidden);
 
   return (
     <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} ${!isDesktop && ' w-full h-[701px]'} w-72 h-[635px] font-semibold rounded-l-md border`}>

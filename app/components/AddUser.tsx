@@ -2,12 +2,10 @@ import Image from "next/image";
 import Alex from '@/app/images/Alex.svg';
 import { collection, getDocs, doc, query, serverTimestamp, setDoc, where, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../lib/Firebase";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserStore } from "../lib/UserStore";
 import { useMediaQuery } from 'react-responsive';
-import DefaultAvatar from '@/app/images/DefaultAvatar.png';
 
-// Define a type for the user data
 type User = {
     id: string;
     username: string;
@@ -15,29 +13,59 @@ type User = {
     password: string;
     email: string;
     about: string;
+    deleted?: boolean; 
 };
 
-const AddUser = (adduser: any) => {
-    // Initialize the state with the correct type
+const AddUser = () => {
     const [user, setUser] = useState<User | null>(null);
+    const [users, setUsers] = useState<User[]>([]);
     const [userNotFound, setUserNotFound] = useState(false);
+    const [query, setQuery] = useState('');
     const { currentUser } = useUserStore();
     const isDesktop = useMediaQuery({ minWidth: 768 });
 
-    const handleSearch = async (e: any) => {
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const userRef = collection(db, "users");
+                const querySnapshot = await getDocs(userRef);
+                let usersList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+
+                const uniqueUsers = new Map();
+                usersList.forEach(user => {
+                    if (!user.deleted && !uniqueUsers.has(user.username)) {
+                        uniqueUsers.set(user.username, user);
+                    }
+                });
+
+                setUsers(Array.from(uniqueUsers.values()));
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const formData = new FormData(e.currentTarget);
         const username = formData.get('username') as string;
 
         try {
             const userRef = collection(db, "users");
             const q = query(userRef, where("username", "==", username));
-            const querySnapShot = await getDocs(q);
+            const querySnapshot = await getDocs(q);
 
-            if (!querySnapShot.empty) {
-                const userData = querySnapShot.docs[0].data() as User;
-                setUser(userData);
-                setUserNotFound(false);
+            if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data() as User;
+                if (!userData.deleted) {
+                    setUser(userData);
+                    setUserNotFound(false);
+                } else {
+                    setUser(null);
+                    setUserNotFound(true);
+                }
             } else {
                 setUser(null);
                 setUserNotFound(true);
@@ -47,10 +75,9 @@ const AddUser = (adduser: any) => {
         }
     };
 
-    const handleAddUser = async () => {
+    const handleAddUser = async (user: User) => {
         const chatRef = collection(db, 'chats');
         const userChatsRef = collection(db, 'userchats');
-    
 
         try {
             const newChatRef = doc(chatRef);
@@ -60,7 +87,7 @@ const AddUser = (adduser: any) => {
                 messages: []
             });
 
-            await updateDoc(doc(userChatsRef, user!.id), {
+            await updateDoc(doc(userChatsRef, user.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
                     lastMessage: '',
@@ -73,48 +100,45 @@ const AddUser = (adduser: any) => {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
                     lastMessage: '',
-                    receiverId: user!.id,
+                    receiverId: user.id,
                     updatedAt: Date.now()
                 })
             });
 
             console.log(newChatRef.id);
             setUser(null);
-            
-
         } catch (error) {
             console.log(error);
         }
     };
 
+    // Filter users based on search query
+    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(query.toLowerCase()));
+
     return (
-        <div className={`p-6 bg-white shadow-lg border rounded-md absolute top-40 left-72 m-auto w-80 ${!isDesktop && 'absolute top-52 left-9'}`}>
-            <form onSubmit={handleSearch} className="space-y-4">
+        <div className={`p-6 bg-white shadow-lg border rounded-md absolute h-96 overflow-auto top-40 left-72 m-auto w-96 ${!isDesktop && 'absolute w-80 top-52 left-9'}`}>
+            <form onSubmit={handleSearch} className="space-y-4 ">
                 <input
                     type="text"
-                    placeholder="Search for username"
+                    placeholder="Search"
                     name="username"
-                    className="w-full p-2 border border-gray-300 text-sm rounded-lg focus:outline-none placeholder:text-sm font-normal"
+                    className="w-full  p-2 border border-gray-300 text-sm rounded-lg focus:outline-none placeholder:text-sm font-normal"
                     autoComplete="off"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                 />
-                <button
-                    type="submit"
-                    className="w-full bg-slate-900 text-white py-2 font-normal text-sm rounded-md hover:bg-black transition duration-300"
-                >
-                    Search
-                </button>
                 {userNotFound && (
                     <div className="text-slate-800 text-sm text-center">User not found.</div>
                 )}
                 {user &&
                     <div className="user mt-4 p-3 bg-slate-100 rounded flex items-center justify-between">
                         <div className="detail flex items-center space-x-4">
-                            <Image src={user.avatar || DefaultAvatar} alt="User Avatar" width={40} height={40} className="rounded-full" />
+                            <Image src={user.avatar || Alex} alt="User Avatar" width={40} height={40} className="rounded-full" />
                             <span className="font-medium text-gray-700">{user.username}</span>
                         </div>
                         <button
                             type="button"
-                            onClick={handleAddUser}
+                            onClick={() => handleAddUser(user)}
                             className="bg-blue-500 text-white py-2 px-4 text-sm font-medium rounded hover:bg-opacity-90 transition duration-300"
                         >
                             Add User
@@ -122,6 +146,27 @@ const AddUser = (adduser: any) => {
                     </div>
                 }
             </form>
+
+            <div className="mt-6">
+                <h2 className="text-lg font-medium text-gray-700">All Users</h2>
+                <ul className="mt-4 space-y-2">
+                    {filteredUsers.map((user) => (
+                        <li key={user.id} className="p-2 bg-slate-100 rounded flex items-center justify-between">
+                            <div className="detail flex items-center space-x-4">
+                                <Image src={user.avatar || Alex} alt="User Avatar" width={40} height={40} className="rounded-full" />
+                                <span className="font-medium text-gray-700">{user.username}</span>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => handleAddUser(user)}
+                                className="bg-blue-500 text-white py-2 px-4 text-sm font-medium rounded hover:bg-opacity-90 transition duration-300"
+                            >
+                                Add User
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
