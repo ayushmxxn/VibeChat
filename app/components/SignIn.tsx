@@ -1,6 +1,4 @@
-// SignInForm.tsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -8,9 +6,11 @@ import { toast } from 'react-toastify';
 import { auth, signInWithGitHub, signInWithGoogle } from '../lib/Firebase'; // Adjust path as per your project structure
 
 const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get('email') as string;
@@ -22,24 +22,32 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGitHubSignIn = async () => {
+    setLoading(true);
     try {
       await signInWithGitHub();
       toast.success('Welcome back!');
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     try {
       await signInWithGoogle();
       toast.success('Welcome back!');
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,11 +83,15 @@ const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
             />
             <span className="text-sm text-slate-600 cursor-pointer hover:text-slate-900">Forgot password?</span>
           </div>
-          <div>
+          <div className="flex items-center">
             <button
               type="submit"
-              className="w-full px-4 py-2 font-medium text-white bg-slate-800 rounded-md hover:bg-slate-900"
+              className="w-full px-4 py-2 font-medium text-white bg-slate-800 rounded-md hover:bg-slate-900 flex items-center justify-center"
             >
+              {loading && (
+                <span className='loaderAuth mr-4'></span>
+              )}
+              
               Sign In
             </button>
           </div>

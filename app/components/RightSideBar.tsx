@@ -15,16 +15,18 @@ function RightSideBar() {
   const [allImages, setAllImages] = useState<string[]>([]);
 
   useEffect(() => {
+    // Fetch chat data on chatId change
     const unsub = onSnapshot(doc(db, 'chats', chatId), (res) => {
       setChat(res.data());
     });
 
     return () => {
-      unsub();
+      unsub(); // Cleanup the snapshot listener
     };
   }, [chatId]);
 
   useEffect(() => {
+    // Update allImages when chat updates
     if (chat) {
       const imageUrls = chat.messages ? chat.messages.filter((message: any) => message.image).map((message: any) => message.image) : [];
       setAllImages(imageUrls);
@@ -66,7 +68,7 @@ function RightSideBar() {
       <div className='grid grid-cols-2 gap-3 w-full overflow-y-auto pl-6 h-52'>
         {allImages.length > 0 ? (
           allImages.map((imageUrl, index) => (
-            <div key={index}>
+            <div key={index}> {/* Ensure each item in map has a unique key */}
               <Link href={imageUrl} target='_blank'>
                 <Image src={imageUrl} alt='Media' width={100} height={50} className='rounded hover:opacity-90' />
               </Link>

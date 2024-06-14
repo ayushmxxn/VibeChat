@@ -17,10 +17,10 @@ import DefaultAvatar from '@/app/images/DefaultAvatar.png'
 import { Timestamp } from 'firebase/firestore';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false })
-
 const storage = getStorage();
 
 const upload = async (file: File) => {
+  
   const storageRef = ref(storage, `images/${file.name}`);
   await uploadBytes(storageRef, file);
   const url = await getDownloadURL(storageRef);
@@ -54,6 +54,8 @@ function Chat() {
   const [text, setText] = useState('');
   const [image, setImage] = useState<{ file: File | null; url: string }>({ file: null, url: '' });
   const endRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  
 
   const handleEmoji = (e: any) => {
     setText((prev) => prev + e.emoji);
@@ -61,10 +63,12 @@ function Chat() {
   };
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true)
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setImage({ file, url });
+
 
       try {
         const imgURL = await upload(file);
@@ -78,6 +82,7 @@ function Chat() {
 
         await updateDoc(doc(db, 'chats', chatId), {
           messages: arrayUnion(message),
+          
         });
 
         const userIDs = [currentUser.id, user.id];
@@ -121,6 +126,7 @@ function Chat() {
         );
 
         setImage({ file: null, url: '' });
+        setLoading(false)
       } catch (error) {
         console.error('Error sending image:', error);
       }
@@ -274,10 +280,16 @@ function Chat() {
                 </div>
               ) : (
                 <div>
-                  <Image src={message.image!} alt='image' width={250} height={250} className='rounded-md' />
+                  {loading?
+                  <span className='loaderAuthImage'></span>
+                  :
+                  <div>
+                    <Image src={message.image!} alt='image' width={250} height={250} className='rounded-md' />
                   <span className={`${message.senderId === currentUser?.id ? 'text-xs text-end pr-4 pt-1 text-[#525354]' : 'text-xs text-end pr-4 pt-1 text-[#525354]'}`}>
                     {new Date(message.createdAt.seconds * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
                   </span>
+                  </div>
+                  } 
                 </div>
               )}
               <div>

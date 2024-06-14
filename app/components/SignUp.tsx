@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from 'firebase/auth';
@@ -6,10 +6,13 @@ import { auth, db } from '@/app/lib/Firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
 
+const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
+  const [loading, setLoading] = useState(false);
+  
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const username = formData.get('username') as string;
@@ -49,10 +52,13 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
     } catch (error: any) {
       console.log(error.message);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGitHubSignIn = async () => {
+    setLoading(true);
     const provider = new GithubAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -77,10 +83,13 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
       toast.success('Account creation successful!');
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -102,9 +111,11 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
         chats: []
       });
 
-      toast.success(`Account creation successful!`);
+      toast.success('Account creation successful!');
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,11 +166,14 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-500 sm:text-sm"
             />
           </div>
-          <div>
+          <div className=''>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-medium text-white bg-slate-800 rounded-md hover:bg-slate-900"
+              className="w-full px-4 py-2 font-medium text-white bg-slate-800 rounded-md hover:bg-slate-900 flex items-center justify-center"
             >
+              {loading && (
+                <span className='loaderAuth mr-4'></span>
+              )}
               Sign Up
             </button>
           </div>

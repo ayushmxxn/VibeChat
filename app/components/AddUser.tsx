@@ -133,6 +133,7 @@ const AddUser = () => {
                     <div className="text-slate-800 text-sm text-center">User not found.</div>
                 )}
                 {user &&
+                    
                     <div className="user mt-4 p-3 bg-slate-100 rounded flex items-center justify-between">
                         <div className="detail flex items-center space-x-4">
                             <Image src={user.avatar || DefaultAvatar} alt="User Avatar" width={40} height={40} className="rounded-full" />
@@ -152,8 +153,9 @@ const AddUser = () => {
             <div className="mt-6">
                 <div className="flex items-center">
                     <Image src={VibeChat} alt="logo" width={20} height={20}/>
-                    <h2 className="text-lg font-medium text-gray-700 ml-2">All Vibers</h2>
+                    <h2 className="text-lg font-medium text-gray-700 ml-2">{users.length} Vibers</h2>
                 </div>
+                <hr className='my-3 border-t-1 border-slate-300 mx-2'/>
                 <ul className="mt-4 space-y-2">
                     {filteredUsers.map((user) => (
                         <li key={user.id} className="p-2 bg-slate-100 rounded flex items-center justify-between">
