@@ -256,7 +256,7 @@ function MobileChat() {
       {/* Chats */}
       <div className='bg-white w-full h-[476px] overflow-auto p-5'>
         <div className='flex justify-center items-center mt-5 mb-10'>
-          <Image src={user?.avatar || DefaultAvatar} alt='NoChat' width={200} height={100} />
+          <Image src={user?.avatar || DefaultAvatar} alt='NoChat' width={200} height={100}  className='rounded-full' />
         </div>
         {chat?.messages?.map((message) => (
           <div className={`flex mt-2 ${message.senderId === currentUser?.id ? 'justify-end' : 'flex justify-start flex-col'}`} key={message.createdAt.seconds}>
