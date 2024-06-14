@@ -118,7 +118,7 @@ const AddUser = () => {
     const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
-        <div className={`p-6 bg-white shadow-lg border rounded-md absolute h-96 overflow-auto top-40 left-72 m-auto w-96 ${!isDesktop && 'left-2'}`}>
+        <div className={`p-6 bg-white shadow-lg border rounded-md absolute h-96 overflow-auto top-40 sm:left-72 m-auto w-96 ${!isDesktop && ''}`}>
             <form onSubmit={handleSearch} className="space-y-4 ">
                 <input
                     type="text"
