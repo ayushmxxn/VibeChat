@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useUserStore } from "../lib/UserStore";
 import { useMediaQuery } from 'react-responsive';
 import DefaultAvatar from '@/app/images/DefaultAvatar.png';
+import VibeChat from '@/app/images/VibeChat.png';
 
 type User = {
     id: string;
@@ -149,7 +150,10 @@ const AddUser = () => {
             </form>
 
             <div className="mt-6">
-                <h2 className="text-lg font-medium text-gray-700">All Users</h2>
+                <div className="flex items-center">
+                    <Image src={VibeChat} alt="logo" width={20} height={20}/>
+                    <h2 className="text-lg font-medium text-gray-700 ml-2">All Vibers</h2>
+                </div>
                 <ul className="mt-4 space-y-2">
                     {filteredUsers.map((user) => (
                         <li key={user.id} className="p-2 bg-slate-100 rounded flex items-center justify-between">
