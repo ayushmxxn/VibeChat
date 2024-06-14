@@ -166,7 +166,7 @@ const AddUser = () => {
                                 onClick={() => handleAddUser(user)}
                                 className="bg-blue-500 text-white py-2 px-4 text-sm font-medium rounded hover:bg-opacity-90 transition duration-300"
                             >
-                                Add User
+                                Add
                             </button>
                         </li>
                     ))}
