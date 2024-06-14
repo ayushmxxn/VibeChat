@@ -28,6 +28,8 @@ function LeftSideBar() {
   const [chats, setChats] = useState<ChatItem[]>([]); // Define the type for chats
   const [query, setQuery] = useState('');
   const isDesktop = useMediaQuery({ minWidth: 768 }); 
+   // Check if username exists
+
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
@@ -88,6 +90,7 @@ function LeftSideBar() {
       const { user, ...rest } = item;
       return rest;
     });
+    
 
     const chatIndex = userChats.findIndex((item) => item.chatId === chat.chatId);
     userChats[chatIndex].isSeen = true;
@@ -105,8 +108,15 @@ function LeftSideBar() {
   };
 
   const filteredChats = chats
-    .filter((c) => c.user.username.toLowerCase().includes(query.toLowerCase()))
-    .filter((c) => !c.hidden);
+  .filter((c) => c.user && c.user.username && c.user.username.toLowerCase().includes(query.toLowerCase()))
+  .filter((c) => !c.hidden);
+
+  
+
+
+
+ 
+
 
   return (
     <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} ${!isDesktop && ' w-full h-[701px]'} w-72 h-[635px] font-semibold rounded-l-md border`}>
