@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Alex from '@/app/images/Alex.svg';
-import { collection, getDocs, doc, query, serverTimestamp, setDoc, where, arrayUnion, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, query as firestoreQuery, serverTimestamp, setDoc, where, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../lib/Firebase";
 import { useState, useEffect } from "react";
 import { useUserStore } from "../lib/UserStore";
@@ -20,7 +20,7 @@ const AddUser = () => {
     const [user, setUser] = useState<User | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [userNotFound, setUserNotFound] = useState(false);
-    const [query, setQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const { currentUser } = useUserStore();
     const isDesktop = useMediaQuery({ minWidth: 768 });
 
@@ -54,7 +54,7 @@ const AddUser = () => {
 
         try {
             const userRef = collection(db, "users");
-            const q = query(userRef, where("username", "==", username));
+            const q = firestoreQuery(userRef, where("username", "==", username));
             const querySnapshot = await getDocs(q);
 
             if (!querySnapshot.empty) {
@@ -108,12 +108,12 @@ const AddUser = () => {
             console.log(newChatRef.id);
             setUser(null);
         } catch (error) {
-            console.log(error);
+            console.error("Error adding user:", error);
         }
     };
 
     // Filter users based on search query
-    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(query.toLowerCase()));
+    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
         <div className={`p-6 bg-white shadow-lg border rounded-md absolute h-96 overflow-auto top-40 left-72 m-auto w-96 ${!isDesktop && 'absolute w-80 top-52 left-9'}`}>
@@ -124,8 +124,8 @@ const AddUser = () => {
                     name="username"
                     className="w-full  p-2 border border-gray-300 text-sm rounded-lg focus:outline-none placeholder:text-sm font-normal"
                     autoComplete="off"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {userNotFound && (
                     <div className="text-slate-800 text-sm text-center">User not found.</div>
