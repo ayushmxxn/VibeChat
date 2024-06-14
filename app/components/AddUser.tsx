@@ -5,6 +5,7 @@ import { db } from "../lib/Firebase";
 import { useState, useEffect } from "react";
 import { useUserStore } from "../lib/UserStore";
 import { useMediaQuery } from 'react-responsive';
+import DefaultAvatar from '@/app/images/DefaultAvatar.png';
 
 type User = {
     id: string;
@@ -133,7 +134,7 @@ const AddUser = () => {
                 {user &&
                     <div className="user mt-4 p-3 bg-slate-100 rounded flex items-center justify-between">
                         <div className="detail flex items-center space-x-4">
-                            <Image src={user.avatar || Alex} alt="User Avatar" width={40} height={40} className="rounded-full" />
+                            <Image src={user.avatar || DefaultAvatar} alt="User Avatar" width={40} height={40} className="rounded-full" />
                             <span className="font-medium text-gray-700">{user.username}</span>
                         </div>
                         <button
@@ -153,7 +154,7 @@ const AddUser = () => {
                     {filteredUsers.map((user) => (
                         <li key={user.id} className="p-2 bg-slate-100 rounded flex items-center justify-between">
                             <div className="detail flex items-center space-x-4">
-                                <Image src={user.avatar || Alex} alt="User Avatar" width={40} height={40} className="rounded-full" />
+                                <Image src={user.avatar || DefaultAvatar} alt="User Avatar" width={40} height={40} className="rounded-full" />
                                 <span className="font-medium text-gray-700">{user.username}</span>
                             </div>
                             <button
