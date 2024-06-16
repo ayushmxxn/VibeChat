@@ -14,6 +14,10 @@ import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image';
 import Vibechat from '@/app/images/VibeChat.png';
 import MobileChat from './components/MobileChat';
+import { useContext } from 'react';
+import { MyContext } from './components/Settings';
+
+
 
 function HomePage() {
   const [newUser, setNewUser] = useState(false); // Track if it's a new user
@@ -40,12 +44,13 @@ function HomePage() {
     )
   }
 
+ 
   return (
     <div>
       {currentUser ? (
-        <div className='bg-white w-full sm:h-[580px] rounded-md'>
+        <div className={`w-full sm:h-[638px] dark:bg-slate-900  `}>
           <div className={`${isDesktop? 'flex' : 'flex-col' }`}>
-            <LeftSideBar />
+            <LeftSideBar  />
             {!isDesktop && <MobileChat />}
             {chatId && isDesktop && <Chat />} {/* Render Chat only if it's desktop and chatId is present */}
             {chatId && isDesktop && <RightSideBar />} {/* Conditionally render RightSideBar based on device type */}
@@ -53,7 +58,7 @@ function HomePage() {
               <div className='flex justify-center items-center w-full flex-col'>
                 <div className='animated-image text-center sm:block hidden'>
                   <Image src={Vibechat} alt='Image' width={250} height={250} />
-                  <p className='font-medium text-2xl'>VibeChat</p>
+                  <p className='font-medium text-2xl dark:text-white'>VibeChat</p>
                 </div>
               </div>
             )}

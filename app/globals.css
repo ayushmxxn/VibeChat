@@ -7,7 +7,7 @@
 /* ScrollBar Styles */
 /* For Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
   /* Width of the scrollbar */
 }
 
@@ -38,7 +38,7 @@
 html {
   scrollbar-width: thin;
   /* Width of the scrollbar */
-  scrollbar-color: #383535 #f0f0f0;
+  scrollbar-color: #1E293B #f0f0f0;
   /* Color of the scrollbar thumb and track */
 }
 
@@ -47,6 +47,7 @@ html {
   -ms-overflow-style: none;
   /* Disable default scrollbar in IE */
 }
+
 
 
 
@@ -277,5 +278,57 @@ body {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.loaderChatList {
+  width: 100px;
+  height: 75px;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  top: 96px;
+  border-radius: 100%;
+}
+
+.loaderChatList:before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  border: 15px solid transparent;
+  border-top: 25px solid #fff;
+  transform: rotate(45deg);
+  top: 50px;
+  left: -15px;
+}
+
+.loaderChatList:after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #FF3D00;
+  box-shadow: 20px 0 #FF3D00, -20px 0 #FF3D00;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(255, 60, 0, 0.25);
+    box-shadow: 20px 0 rgba(255, 60, 0, 0.25), -20px 0 #FF3D00;
+  }
+
+  50% {
+    background-color: #FF3D00;
+    box-shadow: 20px 0 rgba(255, 60, 0, 0.25), -20px 0 rgba(255, 60, 0, 0.25);
+  }
+
+  100% {
+    background-color: rgba(255, 60, 0, 0.25);
+    box-shadow: 20px 0 #FF3D00, -20px 0 rgba(255, 60, 0, 0.25);
   }
 }

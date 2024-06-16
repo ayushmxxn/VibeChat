@@ -134,6 +134,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
               type="text"
               autoComplete="username"
               placeholder="John Doe"
+              min={20}
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-500 sm:text-sm"
             />
