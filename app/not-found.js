@@ -3,11 +3,8 @@ import Link from 'next/link'
 import Image from "next/image";
 import NotFoundIMG from  './images/404.png'
 
-
  
 export default function NotFound() {
-
-    const isDesktop = useMediaQuery({ minWidth: 768 });
 
   return (
     <div className='flex justify-center bg-slate-950 items-center h-screen flex-col gap-10'>
