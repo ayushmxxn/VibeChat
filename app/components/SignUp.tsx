@@ -16,18 +16,11 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
     const formData = new FormData(e.target as HTMLFormElement);
     const username = formData.get('username') as string;
     const password = formData.get('password') as string;
-
-    // Check if username or password exceeds 20 characters
-    if (username.length > 20 || password.length > 20) {
-      toast.error('Username and password cannot exceed 20 characters.');
-      setLoading(false);
-      return;
-    }
-
     const email = formData.get('email') as string;
-    const about = formData.get('about') as string; // New field: about
+    const about = formData.get('about') as string; 
     const avatar = formData.get('avatar') as string;
 
+   
     try {
       // Check if email is already registered
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -157,6 +150,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
               type="text"
               autoComplete="email"
               placeholder="johndoe0101@gmail.com"
+              maxLength={25} 
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-500 sm:text-sm"
             />
