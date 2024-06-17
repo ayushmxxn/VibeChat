@@ -7,7 +7,7 @@ import { getStorage } from 'firebase/storage';
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: "vibechat-bee21.firebaseapp.com",
   projectId: "vibechat-bee21",
   storageBucket: "vibechat-bee21.appspot.com",
