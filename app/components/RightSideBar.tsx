@@ -56,13 +56,13 @@ function RightSideBar() {
  
   return (
     <div className={`bg-white dark:bg-slate-900 dark:text-white w-72 h-screen`}>
-      <div className='flex flex-col bg-slate-800 h-44 items-center'>
+      <div className='flex flex-col dark:bg-slate-800 h-44 items-center'>
         <Image src={user?.avatar || DefaultAvatar} alt='Profile' width={80} height={80} className={`rounded-full mt-5 ${!user?.about && 'mt-8'}`}/>
         <p className='mt-2 font-semibold'>{user?.username || 'User'}</p>
         <p className='text-sm  text-center  text-slate-500 dark:text-slate-400'>{user?.about}</p>
       </div>
       
-      <hr className='border-t-1 border-slate-200 dark:border-slate-500 ' />
+      <hr className='border-t-1 border-slate-200 dark:border-slate-700 ' />
       <div className='flex justify-between mt-1 p-6'>
         <span className='text-sm font-medium'>Shared Media</span>
       </div>

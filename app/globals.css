@@ -4,36 +4,82 @@
 
 
 
-/* For WebKit browsers (like Chrome, Safari, etc.) */
-::-webkit-scrollbar {
+/* Define custom properties for light and dark themes */
+:root {
+  --scrollbar-track-color-light: #f1f1f1;
+  --scrollbar-thumb-color-light: #888;
+  --scrollbar-thumb-hover-color-light: #555;
+
+  --scrollbar-track-color-dark: #1E293B;
+  --scrollbar-thumb-color-dark: #94A3B8;
+  --scrollbar-thumb-hover-color-dark: #A0AEC0;
+}
+
+/* Light mode scrollbars */
+.light-mode ::-webkit-scrollbar {
   width: 8px;
-  /* Adjust the width to make the scrollbar slim */
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  /* Background color of the scrollbar track */
+.light-mode ::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color-light);
   border-radius: 10px;
-  /* Rounded corners for the track */
 }
 
-::-webkit-scrollbar-thumb {
-  background: #888;
-  /* Color of the scrollbar thumb */
+.light-mode ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color-light);
   border-radius: 10px;
-  /* Rounded corners for the thumb */
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  /* Color of the scrollbar thumb on hover */
+.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color-light);
 }
 
-/* For Firefox */
-* {
+/* Dark mode scrollbars */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color-dark);
+  border-radius: 10px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color-dark);
+  border-radius: 10px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color-dark);
+}
+
+/* Firefox styles */
+.light-mode {
   scrollbar-width: thin;
-  scrollbar-color: #94A3B8 #1E293B;
-  
+  scrollbar-color: var(--scrollbar-thumb-color-light) var(--scrollbar-track-color-light);
+}
+
+.dark-mode {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color-dark) var(--scrollbar-track-color-dark);
+}
+
+
+/* Media query for detecting dark mode preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --scrollbar-track-color: var(--scrollbar-track-color-dark);
+    --scrollbar-thumb-color: var(--scrollbar-thumb-color-dark);
+    --scrollbar-thumb-hover-color: var(--scrollbar-thumb-hover-color-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --scrollbar-track-color: var(--scrollbar-track-color-light);
+    --scrollbar-thumb-color: var(--scrollbar-thumb-color-light);
+    --scrollbar-thumb-hover-color: var(--scrollbar-thumb-hover-color-light);
+  }
 }
 
 

@@ -150,7 +150,7 @@ function LeftSideBar() {
               alt='Profile'
               width={35}
               height={35}
-              className='rounded-full cursor-pointer'
+              className='rounded-full cursor-pointer hover:border hover:border-slate-700'
             />
           </div>
           <div className='relative p-5'>

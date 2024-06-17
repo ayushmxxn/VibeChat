@@ -251,7 +251,7 @@ function Chat() {
           <Image src={user?.avatar || DefaultAvatar} alt='Avatar' width={35} height={35} className='rounded-full' />
           <div className='ml-3'>
             <p className='font-medium text-sm'>{user?.username || 'User'}</p>
-            <p className='font-normal text-[#525354] text-xs dark:text-slate-400'>{user.about}</p>
+            <p className='font-normal text-[#525354] text-xs dark:text-slate-400'>{user?.about}</p>
           </div>
         </div>
         
@@ -266,7 +266,7 @@ function Chat() {
           <div className={`flex mt-10 ${message.senderId === currentUser?.id ? 'justify-end' : 'flex justify-start flex-col'}`} key={message.createdAt.seconds}>
             <div className={`${message.senderId === currentUser?.id ? 'flex gap-2 items-start' : 'flex gap-2 items-start'}`}>
               {message.senderId !== currentUser?.id && (
-                <Image src={user.avatar || DefaultAvatar} alt='Profile' width={35} height={35} className='rounded-full' />
+                <Image src={user?.avatar || DefaultAvatar} alt='Profile' width={35} height={35} className='rounded-full' />
               )}
               {message.text ? (
                 <div className={`${message.senderId === currentUser?.id ? 'flex flex-col' : 'flex flex-col'}`}>
@@ -323,7 +323,7 @@ function Chat() {
             <>
               <MdEmojiEmotions size={25}  className={`cursor-not-allowed dark:text-slate-400`} />
               <label htmlFor='file'>
-                <FaRegImage size={20} className='cursor-not-allowed dark:text-slate-400' />
+                <FaRegImage size={20} className='cursor-not-allowed  dark:text-slate-400' />
               </label>
               <input style={{ display: 'none' }} className='cursor-not-allowed' />
             </>
@@ -338,7 +338,7 @@ function Chat() {
                 </div>
               )}
               <label htmlFor='file'>
-                <FaRegImage size={20} className='cursor-pointer text-slate-400' />
+                <FaRegImage size={20} className='cursor-pointer dark:text-slate-400' />
               </label>
               <input type='file' name='file' id='file' style={{ display: 'none' }} className='cursor-pointer' onChange={handleImage} />
             </>

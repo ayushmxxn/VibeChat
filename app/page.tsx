@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import LeftSideBar from './components/LeftSideBar';
 import RightSideBar from './components/RightSideBar';
@@ -14,12 +15,31 @@ import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image';
 import Vibechat from '@/app/images/VibeChat.png';
 import MobileChat from './components/MobileChat';
-import { useContext } from 'react';
-import { MyContext } from './components/Settings';
+import { motion } from "framer-motion"
 
 
 
 function HomePage() {
+
+  function applyTheme() {
+  const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  if (darkModeMediaQuery.matches) {
+    document.documentElement.classList.add('dark-mode');
+    document.documentElement.classList.remove('light-mode');
+  } else {
+    document.documentElement.classList.add('light-mode');
+    document.documentElement.classList.remove('dark-mode');
+  }
+}
+
+// Call the function on page load
+applyTheme();
+
+// Listen for changes in theme preference
+window.matchMedia('(prefers-color-scheme: dark)').addListener(applyTheme);
+
+
+
   const [newUser, setNewUser] = useState(false); // Track if it's a new user
   const { currentUser, isLoading, fetchUserInfo} = useUserStore();
   const { chatId } = useChatStore();
@@ -56,10 +76,26 @@ function HomePage() {
             {chatId && isDesktop && <RightSideBar />} {/* Conditionally render RightSideBar based on device type */}
             {!chatId && (
               <div className='flex justify-center items-center w-full flex-col'>
-                <div className='animated-image text-center sm:block hidden'>
+                <motion.div className='text-center sm:block hidden'
+                initial={{
+                rotate: '0deg',
+                scale: 0,
+                y:-400
+              }}
+              animate={{
+                rotate: '360deg',
+                scale: 1,
+                y: [0, 150, -150, -150, 0]
+              }}
+            
+              transition={{
+                duration: 1,
+                ease: "backInOut",
+              }}
+                >
                   <Image src={Vibechat} alt='Image' width={250} height={250} />
                   <p className='font-medium text-2xl dark:text-white'>VibeChat</p>
-                </div>
+                </motion.div>
               </div>
             )}
           </div>
