@@ -15,7 +15,8 @@ import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image';
 import Vibechat from '@/app/images/VibeChat.png';
 import MobileChat from './components/MobileChat';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import useTheme from './lib/useTheme';
 
 function HomePage() {
   const [newUser, setNewUser] = useState(false); // Track if it's a new user
@@ -23,29 +24,8 @@ function HomePage() {
   const { chatId } = useChatStore();
   const isDesktop = useMediaQuery({ minWidth: 768 }); // Define the breakpoint for mobile vs. desktop
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const applyTheme = () => {
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        if (darkModeMediaQuery.matches) {
-          document.documentElement.classList.add('dark-mode');
-          document.documentElement.classList.remove('light-mode');
-        } else {
-          document.documentElement.classList.add('light-mode');
-          document.documentElement.classList.remove('dark-mode');
-        }
-      };
-
-      applyTheme();
-      // Listen for changes in theme preference
-      window.matchMedia('(prefers-color-scheme: dark)').addListener(applyTheme);
-
-      return () => {
-        // Cleanup listener on component unmount
-        window.matchMedia('(prefers-color-scheme: dark)').removeListener(applyTheme);
-      };
-    }
-  }, []);
+  // Use custom hook to apply theme
+  useTheme();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -81,16 +61,16 @@ function HomePage() {
                   initial={{
                     rotate: '0deg',
                     scale: 0,
-                    y: -400
+                    y: -400,
                   }}
                   animate={{
                     rotate: '360deg',
                     scale: 1,
-                    y: [0, 150, -150, -150, 0]
+                    y: [0, 150, -150, -150, 0],
                   }}
                   transition={{
                     duration: 1,
-                    ease: 'backInOut'
+                    ease: 'backInOut',
                   }}
                 >
                   <Image src={Vibechat} alt="Image" width={250} height={250} />
