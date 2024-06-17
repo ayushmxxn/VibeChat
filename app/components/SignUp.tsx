@@ -6,18 +6,25 @@ import { auth, db } from '@/app/lib/Firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-
 const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
   const [loading, setLoading] = useState(false);
-  
+
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const username = formData.get('username') as string;
-    const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+
+    // Check if username or password exceeds 20 characters
+    if (username.length > 20 || password.length > 20) {
+      toast.error('Username and password cannot exceed 20 characters.');
+      setLoading(false);
+      return;
+    }
+
+    const email = formData.get('email') as string;
     const about = formData.get('about') as string; // New field: about
     const avatar = formData.get('avatar') as string;
 
@@ -28,6 +35,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
       if (signInMethods.length > 0) {
         // User already exists
         toast.error('An account with this email already exists.');
+        setLoading(false);
         return;
       }
 
@@ -134,7 +142,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
               type="text"
               autoComplete="username"
               placeholder="John Doe"
-              min={20}
+              maxLength={20}  // <-- Maximum length set to 20 characters
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-500 sm:text-sm"
             />
@@ -162,6 +170,7 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
               name="password"
               type="password"
               placeholder="1234567890"
+              maxLength={20}  // <-- Maximum length set to 20 characters
               autoComplete="new-password"
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-500 sm:text-sm"
