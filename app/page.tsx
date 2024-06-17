@@ -24,21 +24,26 @@ function HomePage() {
   const isDesktop = useMediaQuery({ minWidth: 768 }); // Define the breakpoint for mobile vs. desktop
 
   useEffect(() => {
-    const applyTheme = () => {
-      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      if (darkModeMediaQuery.matches) {
-        document.documentElement.classList.add('dark-mode');
-        document.documentElement.classList.remove('light-mode');
-      } else {
-        document.documentElement.classList.add('light-mode');
-        document.documentElement.classList.remove('dark-mode');
-      }
-    };
-
     if (typeof window !== 'undefined') {
+      const applyTheme = () => {
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        if (darkModeMediaQuery.matches) {
+          document.documentElement.classList.add('dark-mode');
+          document.documentElement.classList.remove('light-mode');
+        } else {
+          document.documentElement.classList.add('light-mode');
+          document.documentElement.classList.remove('dark-mode');
+        }
+      };
+
       applyTheme();
       // Listen for changes in theme preference
       window.matchMedia('(prefers-color-scheme: dark)').addListener(applyTheme);
+
+      return () => {
+        // Cleanup listener on component unmount
+        window.matchMedia('(prefers-color-scheme: dark)').removeListener(applyTheme);
+      };
     }
   }, []);
 
