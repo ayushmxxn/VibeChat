@@ -146,7 +146,7 @@ function Settings() {
         <LeftSideBar />
       ) : (
         <>
-          <div className={`flex items-center w-72 pb-2 p-3 justify-center dark:bg-slate-900 dark:text-white`}>
+          <div className={`flex items-center w-72 pb-2 p-3 justify-center dark:bg-slate-800 dark:text-white`}>
             <IoIosArrowBack onClick={handleBack} className={`relative right-[80px] cursor-pointer ${isDesktop && 'relative right-[90px]'}`} />
            
             <div className={`${!isDesktop && 'relative left-10 '}`}>
@@ -157,7 +157,7 @@ function Settings() {
           <div className='flex items-center justify-between pr-4'>
             <Image src={newAvatar} alt='Profile' width={90} height={90} className='p-3 rounded-full'/>
             <div className='flex items-center gap-2'>
-              <Image onClick={() => setNewAvatar(DefaultAvatar)} src={Delete} alt='Delete' width={25} height={20} className='bg-white dark:bg-slate-900  p-1 rounded-lg border dark:border-slate-500 cursor-pointer'/>
+              <Image onClick={() => setNewAvatar(DefaultAvatar)} src={Delete} alt='Delete' width={25} height={20} className='bg-white dark:bg-slate-800  p-1 rounded-lg border dark:border-slate-500 cursor-pointer'/>
               <label className='font-normal text-sm flex items-center gap-2 border dark:border-slate-500 px-2 py-1 rounded-md cursor-pointer'>
                 <LuUpload/>
                 Upload
@@ -176,7 +176,7 @@ function Settings() {
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
                   onBlur={handleUsernameBlur}
-                  className='text-xs dark:bg-slate-900 font-medium pl-3 pt-1 text-slate-500 border-none focus:ring-0 focus:outline-none'
+                  className='text-xs dark:bg-slate-800 font-medium pl-3 pt-1 text-slate-500 border-none focus:ring-0 focus:outline-none'
                 />
               ) : (
                 <p className='text-xs font-medium pl-3 pt-1 text-slate-500 dark:text-slate-400'>{newUsername}</p>
@@ -197,7 +197,7 @@ function Settings() {
                   value={aboutMe}
                   onChange={(e) => setAboutMe(e.target.value)}
                   onBlur={handleAboutBlur}
-                  className='text-xs dark:bg-slate-900 font-medium pl-3 pt-1 text-slate-500 border-none focus:ring-0 focus:outline-none'
+                  className='text-xs dark:bg-slate-800 font-medium pl-3 pt-1 text-slate-500 border-none focus:ring-0 focus:outline-none'
                 />
               ) : (
                 <p className='text-xs font-medium pl-3 pt-1 text-slate-500 dark:text-slate-400'>{aboutMe}</p>

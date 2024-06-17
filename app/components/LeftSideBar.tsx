@@ -137,7 +137,7 @@ function LeftSideBar() {
   });
 
   return (
-    <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} ${!isDesktop && ' w-full h-[701px]'} w-72 h-[635px] font-semibold  dark:bg-slate-900 dark:text-white`}>
+    <div className={`${openSettings ? 'bg-white' : 'bg-[#EDEDED]'} ${!isDesktop && ' w-full h-[710px]'} w-72 h-screen font-semibold  dark:bg-slate-800 dark:text-white`}>
       {openSettings ? (
         <Settings />
       ) : (

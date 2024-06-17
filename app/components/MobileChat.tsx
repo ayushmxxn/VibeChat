@@ -246,7 +246,7 @@ function MobileChat() {
   console.log()
 
   return (
-    <div className={`bg-white dark:bg-slate-900     w-full h-[685px] flex-grow flex flex-col justify-between`}>
+    <div className={`bg-white dark:bg-slate-900 w-full h-[685px] flex-grow flex flex-col justify-between`}>
       {/* Topbar */}
       <div className='bg-[#EDEDED] dark:bg-slate-800 dark:text-white w-full h-12 p-2 pl-4 flex justify-between items-center'>
         <div className='flex items-center'>
@@ -284,7 +284,7 @@ function MobileChat() {
                   <span className='loaderAuthImage'></span>
                   :
                   <div>
-                    <Image src={message.image!} alt='image' width={250} height={250} className='rounded-md' />
+                    <Image src={message.image!} alt='image' width={200} height={250} className='rounded-md' />
                   <span className={`${message.senderId === currentUser?.id ? 'text-xs text-end pr-4 pt-1 text-[#525354] dark:text-slate-400' : 'text-xs dark:text-slate-400 text-end pr-4 pt-1 text-[#525354]'}`}>
                     {new Date(message.createdAt.seconds * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
                   </span>
@@ -312,7 +312,7 @@ function MobileChat() {
             id='Searchbar'
             onKeyDown={handleKeyPress}
             placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? 'You cannot text this user' : 'Write a message'}
-            className={`bg-transparent dark:text-slate-100 dark:bg-slate-700 dark:placeholder-slate-300 rounded-full w-full text-sm outline-none pl-10 pr-3 py-1 font-normal  placeholder:text-black`}
+            className={`bg-transparent dark:text-slate-100 dark:bg-slate-700 dark:placeholder-slate-300 rounded-full w-full text-sm outline-none pl-10 pr-3 py-2 font-normal  placeholder:text-black`}
             value={text}
             onChange={(e) => setText(e.target.value)}
             autoComplete='off'

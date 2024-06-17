@@ -164,13 +164,13 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
     const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
-        <div className={`p-6 bg-white dark:bg-slate-900 shadow-lg border dark:border-slate-700 rounded-md absolute h-96 overflow-auto top-40 left-1 sm:left-72 m-auto w-96 ${!isDesktop && ''}`}>
+        <div className={`p-6 bg-white dark:bg-slate-900/50 backdrop-blur-md shadow-lg border dark:border-slate-700 rounded-md absolute h-96 overflow-auto top-40 left-1 sm:left-72 m-auto w-96 ${!isDesktop && ''}`}>
             <form onSubmit={handleSearch} className="space-y-4 ">
                 <input
                     type="text"
                     placeholder="Search"
                     name="username"
-                    className="w-full dark:placeholder-slate-100 pl-3  p-2 border dark:bg-slate-700 border-gray-300 dark:border-slate-700 text-sm rounded-lg focus:outline-none placeholder:text-sm font-normal"
+                    className="w-full dark:placeholder-slate-100 pl-3  p-2 border dark:bg-slate-700/70 border-gray-300 dark:border-slate-700 text-sm rounded-lg focus:outline-none placeholder:text-sm font-normal"
                     autoComplete="off"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -198,7 +198,7 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
             <div className="mt-6">
                 <div className="flex items-center">
                     <Image src={VibeChat} alt="logo" width={20} height={20}/>
-                    <h2 className="text-lg font-medium text-gray-700 ml-2 dark:text-slate-300">{users.length} Vibers</h2>
+                    <h2 className="text-lg font-medium text-gray-500 ml-2 dark:text-slate-300">{users.length} Vibers</h2>
                 </div>
                 <hr className='my-3 border-t-1 border-slate-300 dark:border-slate-500 mx-2'/>
                 {loading ? (
@@ -206,7 +206,7 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
                 ) : (
                     <ul className="mt-4 space-y-2">
                         {filteredUsers.map((user) => (
-                            <li key={user.id} className="p-2 bg-slate-100 dark:bg-slate-800  overflow-auto  rounded flex items-center justify-between">
+                            <li key={user.id} className="p-2 bg-slate-100 dark:bg-transparent overflow-auto  rounded flex items-center justify-between">
                                 <div className="detail flex items-center space-x-4">
                                     <Image src={user.avatar || DefaultAvatar} alt="User Avatar" width={40} height={40} className="rounded-full" />
                                     <span className="font-medium text-gray-700 dark:text-white ">{user.username}</span>

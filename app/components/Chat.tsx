@@ -244,7 +244,7 @@ function Chat() {
   console.log(allImages);
 
   return (
-    <div className='bg-white dark:bg-slate-900  flex-grow flex flex-col justify-between '>
+    <div className='bg-white dark:bg-slate-900 h-screen  flex-grow flex flex-col justify-between '>
       {/* Topbar */}
       <div className='bg-[#EDEDED] dark:bg-slate-800 dark:text-white w-full h-12 p-2 pl-4 flex   justify-between items-center'>
         <div className='flex items-center'>
@@ -303,14 +303,14 @@ function Chat() {
 
       {/* BottomBar */}
       <div className={`bg-[#EDEDED] dark:bg-slate-800 w-full h-14 flex p-4 items-center justify-between`}>
-        <div className={`relative flex items-center w-[580px] bg-white rounded-full h-8 dark:bg-slate-700 ` }>
+        <div className={`relative flex items-center w-[580px] bg-white rounded-full h-10 dark:bg-slate-700 ` }>
           <IoMicOutline size={20} className='absolute left-3 dark:text-slate-300' />
           <input
             name='SearchBar'
             id='Searchbar'
             onKeyDown={handleKeyPress}
             placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? 'You cannot text this user' : 'Write a message'}
-            className={`bg-transparent dark:text-slate-100 dark:bg-slate-700 dark:placeholder-slate-300  rounded-full w-96 outline-none pl-10 pr-3 py-1 font-normal text-sm placeholder:text-black`}
+            className={`bg-transparent dark:text-slate-100 dark:bg-slate-700 dark:placeholder-slate-300  rounded-full w-full outline-none pl-10 pr-3 py-2 font-normal text-sm placeholder:text-black`}
             value={text}
             onChange={(e) => setText(e.target.value)}
             autoComplete='off'
