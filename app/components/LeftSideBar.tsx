@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import Search from '@/app/images/Search.png';
 import { useUserStore } from '../lib/UserStore';
 import { useChatStore } from '../lib/ChatStore';
 import DefaultAvatar from '@/app/images/DefaultAvatar.png';
@@ -45,10 +44,10 @@ function LeftSideBar() {
       const userIds = new Set<string>();
       const uniqueChats = items.filter((item: ChatItem) => {
         if (userIds.has(item.receiverId)) {
-          return false; // Skip if already added
+          return false;
         } else {
           userIds.add(item.receiverId);
-          return true; // Add to uniqueChats
+          return true; 
         }
       });
 
@@ -74,7 +73,7 @@ function LeftSideBar() {
   };
 
   const handleSelected = async (chat: ChatItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // Check if triple click
+    
     if (event.detail === 3) {
       console.log('Double click detected');
       const userChatsRef = doc(db, 'userchats', currentUser.id);
@@ -90,7 +89,7 @@ function LeftSideBar() {
           const nextChat = remainingChats[0];
           changeChat(nextChat.chatId, nextChat.user);
         } else {
-          changeChat('', null); // Clear the chat if no remaining chats
+          changeChat('', null); 
         }
 
         setChats(remainingChats);
@@ -101,7 +100,7 @@ function LeftSideBar() {
       return;
     }
 
-    // Handle single or double click
+    
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
@@ -126,13 +125,13 @@ function LeftSideBar() {
     .filter((c) => c.user && c.user.username && c.user.username.toLowerCase().includes(query.toLowerCase()))
     .filter((c) => !c.hidden);
 
-  // Sort filtered chats by activity (recently chatted with or received a message)
+  
   filteredChats.sort((a, b) => {
-    // If both have been seen or unseen, sort by updatedAt descending
+    
     if (a.isSeen === b.isSeen) {
       return b.updatedAt - a.updatedAt;
     }
-    // Otherwise, prioritize unseen chats
+    
     return a.isSeen ? 1 : -1;
   });
 

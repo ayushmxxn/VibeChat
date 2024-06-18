@@ -15,10 +15,10 @@ const useTheme = () => {
       };
 
       applyTheme();
-      // Listen for changes in theme preference
+      
       const mediaQueryListener = window.matchMedia('(prefers-color-scheme: dark)').addListener(applyTheme);
 
-      // Cleanup listener on component unmount
+      
       return () => {
         window.matchMedia('(prefers-color-scheme: dark)').removeListener(mediaQueryListener);
       };

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useUserStore } from '../lib/UserStore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useMediaQuery } from 'react-responsive';
-import { auth, db } from '../lib/Firebase'; // Import Firebase modules
+import { auth, db } from '../lib/Firebase'; 
 import LeftSideBar from './LeftSideBar';
 import DefaultAvatar from '@/app/images/DefaultAvatar.png';
 import Back from '@/app/images/back.png';
@@ -90,7 +90,6 @@ function Settings() {
 
   const handleEditAboutClick = () => {
     setIsEditingAbout(true);
-    // Set timeout to ensure the input is rendered before focusing
     setTimeout(() => {
       if (aboutInputRef.current) {
         aboutInputRef.current.focus();
@@ -102,7 +101,6 @@ function Settings() {
 
   const handleEditUsernameClick = () => {
     setIsEditingUsername(true);
-    // Set timeout to ensure the input is rendered before focusing
     setTimeout(() => {
       if (usernameInputRef.current) {
         usernameInputRef.current.focus();
@@ -127,13 +125,13 @@ function Settings() {
     console.log(DarkMode)
   };
 
-  // Load the dark mode state from local storage when the component mounts
+  
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(savedDarkMode);
   }, []);
 
-  // Save the dark mode state to local storage whenever it changes
+  
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(DarkMode));
   }, [DarkMode]);

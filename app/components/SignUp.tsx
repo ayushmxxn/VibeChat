@@ -22,11 +22,12 @@ const SignUpForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boo
 
    
     try {
-      // Check if email is already registered
+
+      // Checking if email is already registered
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
 
       if (signInMethods.length > 0) {
-        // User already exists
+        
         toast.error('An account with this email already exists.');
         setLoading(false);
         return;

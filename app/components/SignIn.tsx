@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { toast } from 'react-toastify';
-import { auth, signInWithGitHub, signInWithGoogle } from '../lib/Firebase'; // Adjust path as per your project structure
+import { auth, signInWithGitHub, signInWithGoogle } from '../lib/Firebase';
 
 const SignInForm: React.FC<{ setNewUser: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setNewUser }) => {
   const [loading, setLoading] = useState(false);

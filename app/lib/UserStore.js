@@ -9,7 +9,7 @@ export const useUserStore = create((set) => ({
     if (!uid) return set({ currentUser: null, isLoading: false })
 
     try {
-      // Assume the collection name is 'users'
+      
       const docRef = doc(db, 'users', uid);
       const docSnap = await getDoc(docRef);
 

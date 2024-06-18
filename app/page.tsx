@@ -19,12 +19,12 @@ import { motion } from 'framer-motion';
 import useTheme from './lib/useTheme';
 
 function HomePage() {
-  const [newUser, setNewUser] = useState(false); // Track if it's a new user
+  const [newUser, setNewUser] = useState(false); 
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const { chatId } = useChatStore();
-  const isDesktop = useMediaQuery({ minWidth: 768 }); // Define the breakpoint for mobile vs. desktop
+  const isDesktop = useMediaQuery({ minWidth: 768 }); 
 
-  // Use custom hook to apply theme
+  // Custom hook to apply theme
   useTheme();
 
   useEffect(() => {
@@ -52,8 +52,8 @@ function HomePage() {
           <div className={`${isDesktop ? 'flex' : 'flex-col'}`}>
             <LeftSideBar />
             {!isDesktop && <MobileChat />}
-            {chatId && isDesktop && <Chat />} {/* Render Chat only if it's desktop and chatId is present */}
-            {chatId && isDesktop && <RightSideBar />} {/* Conditionally render RightSideBar based on device type */}
+            {chatId && isDesktop && <Chat />} {/* Rendering Chat only if desktop and chatId is present */}
+            {chatId && isDesktop && <RightSideBar />} {/* Conditionally rendering RightSideBar*/}
             {!chatId && (
               <div className="flex justify-center items-center w-full flex-col">
                 <motion.div
@@ -83,11 +83,11 @@ function HomePage() {
       ) : (
         newUser ? (
           <div>
-            <Login setNewUser={setNewUser} /> {/* Pass setNewUser to Login */}
+            <Login setNewUser={setNewUser} /> 
           </div>
         ) : (
           <div>
-            <SignUpForm setNewUser={setNewUser} /> {/* Pass setNewUser to SignUpForm */}
+            <SignUpForm setNewUser={setNewUser} /> 
           </div>
         )
       )}

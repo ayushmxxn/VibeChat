@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Send from '@/app/images/Send.png'
-import Emoji from '@/app/images/Emoji.png'
-import Gallary from '@/app/images/Gallary.png'
 import { useUserStore } from '../lib/UserStore'
 import { doc, getDoc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../lib/Firebase';
@@ -329,8 +327,6 @@ function Chat() {
             </>
           ) : (
             <>
-            
-
                <MdEmojiEmotions size={25} onClick={() => setOpen((prev) => !prev)} className={`cursor-pointer dark:text-slate-400`} />
               {open && (
                 <div className={`absolute top-28 right-80 emoji-picker ${open ? 'emoji-picker-enter' : 'emoji-picker-exit'}`}>

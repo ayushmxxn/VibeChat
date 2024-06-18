@@ -15,18 +15,18 @@ function RightSideBar() {
   const [allImages, setAllImages] = useState<string[]>([]);
 
   useEffect(() => {
-    // Fetch chat data on chatId change
+    
     const unsub = onSnapshot(doc(db, 'chats', chatId), (res) => {
       setChat(res.data());
     });
 
     return () => {
-      unsub(); // Cleanup the snapshot listener
+      unsub();
     };
   }, [chatId]);
 
   useEffect(() => {
-    // Update allImages when chat updates
+   
     if (chat) {
       const imageUrls = chat.messages ? chat.messages.filter((message: any) => message.image).map((message: any) => message.image) : [];
       setAllImages(imageUrls);

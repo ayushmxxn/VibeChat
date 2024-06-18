@@ -2,10 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Mic from '@/app/images/Mic.svg'
 import Send from '@/app/images/Send.png'
-import Emoji from '@/app/images/Emoji.png'
-import Gallary from '@/app/images/Gallary.png'
 import { useUserStore } from '../lib/UserStore'
 import { doc, getDoc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../lib/Firebase';

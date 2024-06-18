@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { collection, getDocs, doc, query as firestoreQuery, serverTimestamp, setDoc, updateDoc, onSnapshot, getDoc, arrayUnion, where } from "firebase/firestore";
+import { collection, getDocs, doc, query as firestoreQuery, serverTimestamp, setDoc, updateDoc, getDoc, arrayUnion, where } from "firebase/firestore";
 import { db } from "../lib/Firebase";
 import { useState, useEffect, FunctionComponent } from "react";
 import { useUserStore } from "../lib/UserStore";
@@ -39,7 +39,7 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const { currentUser } = useUserStore();
     const [loading, setLoading] = useState(false);
-    const [chats, setChats] = useState<ChatItem[]>([]); // State to hold chats
+    const [chats, setChats] = useState<ChatItem[]>([]); 
     const isDesktop = useMediaQuery({ minWidth: 768 });
 
     useEffect(() => {
@@ -118,7 +118,7 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
         const chatRef = collection(db, 'chats');
         const userChatsRef = collection(db, 'userchats');
 
-        // Check if user is already in chats
+        
         const userAlreadyAdded = chats.some(chat => chat.receiverId === user.id);
 
         if (userAlreadyAdded) {
@@ -160,7 +160,7 @@ const AddUser: FunctionComponent<AddUserProps> = ({ onClose }) => {
         }
     };
 
-    // Filter users based on search query
+   
     const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
